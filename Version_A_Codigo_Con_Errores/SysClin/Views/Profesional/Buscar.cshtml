@@ -1,0 +1,103 @@
+﻿@model SysClin.Models.ViewModel.FiltroBusquedaProfesionalViewModel
+
+@{
+    ViewBag.Title = "Buscar profesionales";
+    Layout = ViewBag.Layout;
+}
+
+<h2>Buscar profesionales</h2>
+<hr />
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <p class="text-muted">
+            Ingrese al menos un criterio para realizar la búsqueda.
+        </p>
+
+        @using (Html.BeginForm("Buscar", "Profesional", FormMethod.Post))
+        {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger mb-3" })
+
+            <div class="row g-3">
+
+                <!-- Nombre -->
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.Nombre)
+                    @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control", placeholder = "Nombre completo" })
+                </div>
+
+                <!-- Especialidad -->
+                <div class="col-md-4">
+                    @Html.Label("Especialidad")
+                    @Html.DropDownListFor(
+                        m => m.ID_Especialidad,
+                        Model.Especialidades,
+                        "-- Seleccione especialidad --",
+                        new { @class = "form-control" }
+                    )
+                </div>
+
+                <!-- Lugar de atención -->
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.Lugar)
+                    @Html.TextBoxFor(m => m.Lugar, new { @class = "form-control", placeholder = "Hospital, clínica..." })
+                </div>
+
+            </div>
+
+            <div class="mt-3 text-end">
+                <button type="submit" class="btn btn-primary">
+                    Buscar
+                </button>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- RESULTADOS -->
+@if (ViewBag.RealizoBusqueda == true)
+{
+    if (ViewBag.SinResultados == true)
+    {
+        <div class="alert alert-warning">
+            No se encontraron profesionales según los criterios ingresados.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <h5 class="mb-3">Resultados</h5>
+
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Especialidad</th>
+                            <th>Lugar de atención</th>
+                            <th class="text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model.Resultados)
+                        {
+                            <tr>
+                                <td>@p.NombreCompleto</td>
+                                <td>@p.Especialidad</td>
+                                <td>@p.LugarAtencion</td>
+                                <td class="text-center">
+                                    <a class="btn btn-outline-primary btn-sm"
+                                       href="@Url.Action("Perfil", "Profesional", new { id = p.ID_Usuario })">
+                                        Ver perfil
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    }
+}

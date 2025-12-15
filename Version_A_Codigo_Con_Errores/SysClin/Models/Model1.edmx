@@ -1,0 +1,857 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SysClinModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BloqueoHorario">
+          <Key>
+            <PropertyRef Name="ID_Bloqueo_Horario" />
+          </Key>
+          <Property Name="ID_Bloqueo_Horario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Usuario" Type="int" Nullable="false" />
+          <Property Name="Fecha_Inicio" Type="date" Nullable="false" />
+          <Property Name="Hora_Inicio" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Fecha_Fin" Type="date" Nullable="false" />
+          <Property Name="Hora_Fin" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cita">
+          <Key>
+            <PropertyRef Name="ID_Cita" />
+          </Key>
+          <Property Name="ID_Cita" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Paciente" Type="int" Nullable="false" />
+          <Property Name="ID_Profesional" Type="int" Nullable="false" />
+          <Property Name="ID_Servicio" Type="int" Nullable="false" />
+          <Property Name="ID_Estado_Cita" Type="int" Nullable="false" />
+          <Property Name="Fecha" Type="date" Nullable="false" />
+          <Property Name="Hora" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Fecha_Creacion" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="ID_Cita_Original" Type="int" />
+        </EntityType>
+        <EntityType Name="Especialidad">
+          <Key>
+            <PropertyRef Name="ID_Especialidad" />
+          </Key>
+          <Property Name="ID_Especialidad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EstadoCita">
+          <Key>
+            <PropertyRef Name="ID_Estado_Cita" />
+          </Key>
+          <Property Name="ID_Estado_Cita" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HorarioAtencion">
+          <Key>
+            <PropertyRef Name="ID_Horario" />
+          </Key>
+          <Property Name="ID_Horario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Usuario" Type="int" Nullable="false" />
+          <Property Name="Dia_Semana" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Hora_Inicio" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Hora_Fin" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Duracion_Minutos" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PerfilProfesional">
+          <Key>
+            <PropertyRef Name="ID_Perfil_Profesional" />
+          </Key>
+          <Property Name="ID_Perfil_Profesional" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Usuario" Type="int" Nullable="false" />
+          <Property Name="ID_Especialidad" Type="int" Nullable="false" />
+          <Property Name="Lugar_Atencion" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Tiempo_Anticipacion" Type="int" />
+          <Property Name="Unidad_Anticipacion" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="RecuperacionContrasena">
+          <Key>
+            <PropertyRef Name="ID_Recuperacion_Contrasena" />
+          </Key>
+          <Property Name="ID_Recuperacion_Contrasena" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Usuario" Type="int" Nullable="false" />
+          <Property Name="Codigo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Fecha_Solicitud" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Fecha_Expiracion" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Usado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Servicio">
+          <Key>
+            <PropertyRef Name="ID_Servicio" />
+          </Key>
+          <Property Name="ID_Servicio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Usuario" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="200" />
+          <Property Name="Precio" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoIdentificacion">
+          <Key>
+            <PropertyRef Name="ID_Tipo_Identificacion" />
+          </Key>
+          <Property Name="ID_Tipo_Identificacion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoUsuario">
+          <Key>
+            <PropertyRef Name="ID_Tipo_Usuario" />
+          </Key>
+          <Property Name="ID_Tipo_Usuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="ID_Usuario" />
+          </Key>
+          <Property Name="ID_Usuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Tipo_Usuario" Type="int" Nullable="false" />
+          <Property Name="ID_Tipo_Identificacion" Type="int" Nullable="false" />
+          <Property Name="Numero_Identificacion" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Primer_Apellido" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Segundo_Apellido" Type="nvarchar" MaxLength="50" />
+          <Property Name="Correo_Electronico" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Contrasena" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Telefono" Type="nvarchar" MaxLength="8" Nullable="false" />
+          <Property Name="Fecha_Nacimiento" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_BloqueoHorario_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="BloqueoHorario" Type="Self.BloqueoHorario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID_Usuario" />
+            </Principal>
+            <Dependent Role="BloqueoHorario">
+              <PropertyRef Name="ID_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_CitaOriginal">
+          <End Role="Cita" Type="Self.Cita" Multiplicity="0..1" />
+          <End Role="Cita1" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cita">
+              <PropertyRef Name="ID_Cita" />
+            </Principal>
+            <Dependent Role="Cita1">
+              <PropertyRef Name="ID_Cita_Original" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_EstadoCita">
+          <End Role="EstadoCita" Type="Self.EstadoCita" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstadoCita">
+              <PropertyRef Name="ID_Estado_Cita" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="ID_Estado_Cita" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_Paciente">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID_Usuario" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="ID_Paciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_Profesional">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID_Usuario" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="ID_Profesional" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_Servicio">
+          <End Role="Servicio" Type="Self.Servicio" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Servicio">
+              <PropertyRef Name="ID_Servicio" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="ID_Servicio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HorarioAtencion_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="HorarioAtencion" Type="Self.HorarioAtencion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID_Usuario" />
+            </Principal>
+            <Dependent Role="HorarioAtencion">
+              <PropertyRef Name="ID_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PerfilProfesional_Especialidad">
+          <End Role="Especialidad" Type="Self.Especialidad" Multiplicity="1" />
+          <End Role="PerfilProfesional" Type="Self.PerfilProfesional" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Especialidad">
+              <PropertyRef Name="ID_Especialidad" />
+            </Principal>
+            <Dependent Role="PerfilProfesional">
+              <PropertyRef Name="ID_Especialidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PerfilProfesional_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="PerfilProfesional" Type="Self.PerfilProfesional" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID_Usuario" />
+            </Principal>
+            <Dependent Role="PerfilProfesional">
+              <PropertyRef Name="ID_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RecuperacionContrasena_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="RecuperacionContrasena" Type="Self.RecuperacionContrasena" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID_Usuario" />
+            </Principal>
+            <Dependent Role="RecuperacionContrasena">
+              <PropertyRef Name="ID_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Servicio_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Servicio" Type="Self.Servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID_Usuario" />
+            </Principal>
+            <Dependent Role="Servicio">
+              <PropertyRef Name="ID_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_TipoIdentificacion">
+          <End Role="TipoIdentificacion" Type="Self.TipoIdentificacion" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoIdentificacion">
+              <PropertyRef Name="ID_Tipo_Identificacion" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="ID_Tipo_Identificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_TipoUsuario">
+          <End Role="TipoUsuario" Type="Self.TipoUsuario" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoUsuario">
+              <PropertyRef Name="ID_Tipo_Usuario" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="ID_Tipo_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SysClinModelStoreContainer">
+          <EntitySet Name="BloqueoHorario" EntityType="Self.BloqueoHorario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cita" EntityType="Self.Cita" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Especialidad" EntityType="Self.Especialidad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EstadoCita" EntityType="Self.EstadoCita" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HorarioAtencion" EntityType="Self.HorarioAtencion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PerfilProfesional" EntityType="Self.PerfilProfesional" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RecuperacionContrasena" EntityType="Self.RecuperacionContrasena" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Servicio" EntityType="Self.Servicio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoIdentificacion" EntityType="Self.TipoIdentificacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoUsuario" EntityType="Self.TipoUsuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BloqueoHorario_Usuario" Association="Self.FK_BloqueoHorario_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="BloqueoHorario" EntitySet="BloqueoHorario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_CitaOriginal" Association="Self.FK_Cita_CitaOriginal">
+            <End Role="Cita" EntitySet="Cita" />
+            <End Role="Cita1" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_EstadoCita" Association="Self.FK_Cita_EstadoCita">
+            <End Role="EstadoCita" EntitySet="EstadoCita" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_Paciente" Association="Self.FK_Cita_Paciente">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_Profesional" Association="Self.FK_Cita_Profesional">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_Servicio" Association="Self.FK_Cita_Servicio">
+            <End Role="Servicio" EntitySet="Servicio" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HorarioAtencion_Usuario" Association="Self.FK_HorarioAtencion_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="HorarioAtencion" EntitySet="HorarioAtencion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PerfilProfesional_Especialidad" Association="Self.FK_PerfilProfesional_Especialidad">
+            <End Role="Especialidad" EntitySet="Especialidad" />
+            <End Role="PerfilProfesional" EntitySet="PerfilProfesional" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PerfilProfesional_Usuario" Association="Self.FK_PerfilProfesional_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="PerfilProfesional" EntitySet="PerfilProfesional" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecuperacionContrasena_Usuario" Association="Self.FK_RecuperacionContrasena_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="RecuperacionContrasena" EntitySet="RecuperacionContrasena" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Servicio_Usuario" Association="Self.FK_Servicio_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Servicio" EntitySet="Servicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_TipoIdentificacion" Association="Self.FK_Usuario_TipoIdentificacion">
+            <End Role="TipoIdentificacion" EntitySet="TipoIdentificacion" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_TipoUsuario" Association="Self.FK_Usuario_TipoUsuario">
+            <End Role="TipoUsuario" EntitySet="TipoUsuario" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SysClinModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BloqueoHorario">
+          <Key>
+            <PropertyRef Name="ID_Bloqueo_Horario" />
+          </Key>
+          <Property Name="ID_Bloqueo_Horario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Usuario" Type="Int32" Nullable="false" />
+          <Property Name="Fecha_Inicio" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Hora_Inicio" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Fecha_Fin" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Hora_Fin" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_BloqueoHorario_Usuario" FromRole="BloqueoHorario" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Cita">
+          <Key>
+            <PropertyRef Name="ID_Cita" />
+          </Key>
+          <Property Name="ID_Cita" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Paciente" Type="Int32" Nullable="false" />
+          <Property Name="ID_Profesional" Type="Int32" Nullable="false" />
+          <Property Name="ID_Servicio" Type="Int32" Nullable="false" />
+          <Property Name="ID_Estado_Cita" Type="Int32" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Hora" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Fecha_Creacion" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ID_Cita_Original" Type="Int32" />
+          <NavigationProperty Name="Cita1" Relationship="Self.FK_Cita_CitaOriginal" FromRole="Cita" ToRole="Cita1" />
+          <NavigationProperty Name="Cita2" Relationship="Self.FK_Cita_CitaOriginal" FromRole="Cita1" ToRole="Cita" />
+          <NavigationProperty Name="EstadoCita" Relationship="Self.FK_Cita_EstadoCita" FromRole="Cita" ToRole="EstadoCita" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Cita_Paciente" FromRole="Cita" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario1" Relationship="Self.FK_Cita_Profesional" FromRole="Cita" ToRole="Usuario" />
+          <NavigationProperty Name="Servicio" Relationship="Self.FK_Cita_Servicio" FromRole="Cita" ToRole="Servicio" />
+        </EntityType>
+        <EntityType Name="Especialidad">
+          <Key>
+            <PropertyRef Name="ID_Especialidad" />
+          </Key>
+          <Property Name="ID_Especialidad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PerfilProfesional" Relationship="Self.FK_PerfilProfesional_Especialidad" FromRole="Especialidad" ToRole="PerfilProfesional" />
+        </EntityType>
+        <EntityType Name="EstadoCita">
+          <Key>
+            <PropertyRef Name="ID_Estado_Cita" />
+          </Key>
+          <Property Name="ID_Estado_Cita" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Cita" Relationship="Self.FK_Cita_EstadoCita" FromRole="EstadoCita" ToRole="Cita" />
+        </EntityType>
+        <EntityType Name="HorarioAtencion">
+          <Key>
+            <PropertyRef Name="ID_Horario" />
+          </Key>
+          <Property Name="ID_Horario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Usuario" Type="Int32" Nullable="false" />
+          <Property Name="Dia_Semana" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Hora_Inicio" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Hora_Fin" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Duracion_Minutos" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_HorarioAtencion_Usuario" FromRole="HorarioAtencion" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="PerfilProfesional">
+          <Key>
+            <PropertyRef Name="ID_Perfil_Profesional" />
+          </Key>
+          <Property Name="ID_Perfil_Profesional" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Usuario" Type="Int32" Nullable="false" />
+          <Property Name="ID_Especialidad" Type="Int32" Nullable="false" />
+          <Property Name="Lugar_Atencion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Tiempo_Anticipacion" Type="Int32" />
+          <Property Name="Unidad_Anticipacion" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Especialidad" Relationship="Self.FK_PerfilProfesional_Especialidad" FromRole="PerfilProfesional" ToRole="Especialidad" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_PerfilProfesional_Usuario" FromRole="PerfilProfesional" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="RecuperacionContrasena">
+          <Key>
+            <PropertyRef Name="ID_Recuperacion_Contrasena" />
+          </Key>
+          <Property Name="ID_Recuperacion_Contrasena" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Usuario" Type="Int32" Nullable="false" />
+          <Property Name="Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Fecha_Solicitud" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Fecha_Expiracion" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Usado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_RecuperacionContrasena_Usuario" FromRole="RecuperacionContrasena" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Servicio">
+          <Key>
+            <PropertyRef Name="ID_Servicio" />
+          </Key>
+          <Property Name="ID_Servicio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Usuario" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Precio" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Cita" Relationship="Self.FK_Cita_Servicio" FromRole="Servicio" ToRole="Cita" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Servicio_Usuario" FromRole="Servicio" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="TipoIdentificacion">
+          <Key>
+            <PropertyRef Name="ID_Tipo_Identificacion" />
+          </Key>
+          <Property Name="ID_Tipo_Identificacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Usuario_TipoIdentificacion" FromRole="TipoIdentificacion" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="TipoUsuario">
+          <Key>
+            <PropertyRef Name="ID_Tipo_Usuario" />
+          </Key>
+          <Property Name="ID_Tipo_Usuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Usuario_TipoUsuario" FromRole="TipoUsuario" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="ID_Usuario" />
+          </Key>
+          <Property Name="ID_Usuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Tipo_Usuario" Type="Int32" Nullable="false" />
+          <Property Name="ID_Tipo_Identificacion" Type="Int32" Nullable="false" />
+          <Property Name="Numero_Identificacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Primer_Apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Segundo_Apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Correo_Electronico" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Contrasena" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Fecha_Nacimiento" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="BloqueoHorario" Relationship="Self.FK_BloqueoHorario_Usuario" FromRole="Usuario" ToRole="BloqueoHorario" />
+          <NavigationProperty Name="Cita" Relationship="Self.FK_Cita_Paciente" FromRole="Usuario" ToRole="Cita" />
+          <NavigationProperty Name="Cita1" Relationship="Self.FK_Cita_Profesional" FromRole="Usuario" ToRole="Cita" />
+          <NavigationProperty Name="HorarioAtencion" Relationship="Self.FK_HorarioAtencion_Usuario" FromRole="Usuario" ToRole="HorarioAtencion" />
+          <NavigationProperty Name="PerfilProfesional" Relationship="Self.FK_PerfilProfesional_Usuario" FromRole="Usuario" ToRole="PerfilProfesional" />
+          <NavigationProperty Name="RecuperacionContrasena" Relationship="Self.FK_RecuperacionContrasena_Usuario" FromRole="Usuario" ToRole="RecuperacionContrasena" />
+          <NavigationProperty Name="Servicio" Relationship="Self.FK_Servicio_Usuario" FromRole="Usuario" ToRole="Servicio" />
+          <NavigationProperty Name="TipoIdentificacion" Relationship="Self.FK_Usuario_TipoIdentificacion" FromRole="Usuario" ToRole="TipoIdentificacion" />
+          <NavigationProperty Name="TipoUsuario" Relationship="Self.FK_Usuario_TipoUsuario" FromRole="Usuario" ToRole="TipoUsuario" />
+        </EntityType>
+        <Association Name="FK_BloqueoHorario_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="BloqueoHorario" Type="Self.BloqueoHorario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID_Usuario" />
+            </Principal>
+            <Dependent Role="BloqueoHorario">
+              <PropertyRef Name="ID_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_CitaOriginal">
+          <End Role="Cita" Type="Self.Cita" Multiplicity="0..1" />
+          <End Role="Cita1" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cita">
+              <PropertyRef Name="ID_Cita" />
+            </Principal>
+            <Dependent Role="Cita1">
+              <PropertyRef Name="ID_Cita_Original" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_EstadoCita">
+          <End Role="EstadoCita" Type="Self.EstadoCita" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstadoCita">
+              <PropertyRef Name="ID_Estado_Cita" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="ID_Estado_Cita" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_Paciente">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID_Usuario" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="ID_Paciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_Profesional">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID_Usuario" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="ID_Profesional" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_Servicio">
+          <End Role="Servicio" Type="Self.Servicio" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Servicio">
+              <PropertyRef Name="ID_Servicio" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="ID_Servicio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PerfilProfesional_Especialidad">
+          <End Role="Especialidad" Type="Self.Especialidad" Multiplicity="1" />
+          <End Role="PerfilProfesional" Type="Self.PerfilProfesional" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Especialidad">
+              <PropertyRef Name="ID_Especialidad" />
+            </Principal>
+            <Dependent Role="PerfilProfesional">
+              <PropertyRef Name="ID_Especialidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HorarioAtencion_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="HorarioAtencion" Type="Self.HorarioAtencion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID_Usuario" />
+            </Principal>
+            <Dependent Role="HorarioAtencion">
+              <PropertyRef Name="ID_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PerfilProfesional_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="PerfilProfesional" Type="Self.PerfilProfesional" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID_Usuario" />
+            </Principal>
+            <Dependent Role="PerfilProfesional">
+              <PropertyRef Name="ID_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RecuperacionContrasena_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="RecuperacionContrasena" Type="Self.RecuperacionContrasena" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID_Usuario" />
+            </Principal>
+            <Dependent Role="RecuperacionContrasena">
+              <PropertyRef Name="ID_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Servicio_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Servicio" Type="Self.Servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="ID_Usuario" />
+            </Principal>
+            <Dependent Role="Servicio">
+              <PropertyRef Name="ID_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_TipoIdentificacion">
+          <End Role="TipoIdentificacion" Type="Self.TipoIdentificacion" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoIdentificacion">
+              <PropertyRef Name="ID_Tipo_Identificacion" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="ID_Tipo_Identificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_TipoUsuario">
+          <End Role="TipoUsuario" Type="Self.TipoUsuario" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoUsuario">
+              <PropertyRef Name="ID_Tipo_Usuario" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="ID_Tipo_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SysClinEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BloqueoHorario" EntityType="Self.BloqueoHorario" />
+          <EntitySet Name="Cita" EntityType="Self.Cita" />
+          <EntitySet Name="Especialidad" EntityType="Self.Especialidad" />
+          <EntitySet Name="EstadoCita" EntityType="Self.EstadoCita" />
+          <EntitySet Name="HorarioAtencion" EntityType="Self.HorarioAtencion" />
+          <EntitySet Name="PerfilProfesional" EntityType="Self.PerfilProfesional" />
+          <EntitySet Name="RecuperacionContrasena" EntityType="Self.RecuperacionContrasena" />
+          <EntitySet Name="Servicio" EntityType="Self.Servicio" />
+          <EntitySet Name="TipoIdentificacion" EntityType="Self.TipoIdentificacion" />
+          <EntitySet Name="TipoUsuario" EntityType="Self.TipoUsuario" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+          <AssociationSet Name="FK_BloqueoHorario_Usuario" Association="Self.FK_BloqueoHorario_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="BloqueoHorario" EntitySet="BloqueoHorario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_CitaOriginal" Association="Self.FK_Cita_CitaOriginal">
+            <End Role="Cita" EntitySet="Cita" />
+            <End Role="Cita1" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_EstadoCita" Association="Self.FK_Cita_EstadoCita">
+            <End Role="EstadoCita" EntitySet="EstadoCita" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_Paciente" Association="Self.FK_Cita_Paciente">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_Profesional" Association="Self.FK_Cita_Profesional">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_Servicio" Association="Self.FK_Cita_Servicio">
+            <End Role="Servicio" EntitySet="Servicio" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PerfilProfesional_Especialidad" Association="Self.FK_PerfilProfesional_Especialidad">
+            <End Role="Especialidad" EntitySet="Especialidad" />
+            <End Role="PerfilProfesional" EntitySet="PerfilProfesional" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HorarioAtencion_Usuario" Association="Self.FK_HorarioAtencion_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="HorarioAtencion" EntitySet="HorarioAtencion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PerfilProfesional_Usuario" Association="Self.FK_PerfilProfesional_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="PerfilProfesional" EntitySet="PerfilProfesional" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecuperacionContrasena_Usuario" Association="Self.FK_RecuperacionContrasena_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="RecuperacionContrasena" EntitySet="RecuperacionContrasena" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Servicio_Usuario" Association="Self.FK_Servicio_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Servicio" EntitySet="Servicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_TipoIdentificacion" Association="Self.FK_Usuario_TipoIdentificacion">
+            <End Role="TipoIdentificacion" EntitySet="TipoIdentificacion" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_TipoUsuario" Association="Self.FK_Usuario_TipoUsuario">
+            <End Role="TipoUsuario" EntitySet="TipoUsuario" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SysClinModelStoreContainer" CdmEntityContainer="SysClinEntities">
+          <EntitySetMapping Name="BloqueoHorario">
+            <EntityTypeMapping TypeName="SysClinModel.BloqueoHorario">
+              <MappingFragment StoreEntitySet="BloqueoHorario">
+                <ScalarProperty Name="ID_Bloqueo_Horario" ColumnName="ID_Bloqueo_Horario" />
+                <ScalarProperty Name="ID_Usuario" ColumnName="ID_Usuario" />
+                <ScalarProperty Name="Fecha_Inicio" ColumnName="Fecha_Inicio" />
+                <ScalarProperty Name="Hora_Inicio" ColumnName="Hora_Inicio" />
+                <ScalarProperty Name="Fecha_Fin" ColumnName="Fecha_Fin" />
+                <ScalarProperty Name="Hora_Fin" ColumnName="Hora_Fin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cita">
+            <EntityTypeMapping TypeName="SysClinModel.Cita">
+              <MappingFragment StoreEntitySet="Cita">
+                <ScalarProperty Name="ID_Cita" ColumnName="ID_Cita" />
+                <ScalarProperty Name="ID_Paciente" ColumnName="ID_Paciente" />
+                <ScalarProperty Name="ID_Profesional" ColumnName="ID_Profesional" />
+                <ScalarProperty Name="ID_Servicio" ColumnName="ID_Servicio" />
+                <ScalarProperty Name="ID_Estado_Cita" ColumnName="ID_Estado_Cita" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Hora" ColumnName="Hora" />
+                <ScalarProperty Name="Fecha_Creacion" ColumnName="Fecha_Creacion" />
+                <ScalarProperty Name="ID_Cita_Original" ColumnName="ID_Cita_Original" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Especialidad">
+            <EntityTypeMapping TypeName="SysClinModel.Especialidad">
+              <MappingFragment StoreEntitySet="Especialidad">
+                <ScalarProperty Name="ID_Especialidad" ColumnName="ID_Especialidad" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EstadoCita">
+            <EntityTypeMapping TypeName="SysClinModel.EstadoCita">
+              <MappingFragment StoreEntitySet="EstadoCita">
+                <ScalarProperty Name="ID_Estado_Cita" ColumnName="ID_Estado_Cita" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HorarioAtencion">
+            <EntityTypeMapping TypeName="SysClinModel.HorarioAtencion">
+              <MappingFragment StoreEntitySet="HorarioAtencion">
+                <ScalarProperty Name="ID_Horario" ColumnName="ID_Horario" />
+                <ScalarProperty Name="ID_Usuario" ColumnName="ID_Usuario" />
+                <ScalarProperty Name="Dia_Semana" ColumnName="Dia_Semana" />
+                <ScalarProperty Name="Hora_Inicio" ColumnName="Hora_Inicio" />
+                <ScalarProperty Name="Hora_Fin" ColumnName="Hora_Fin" />
+                <ScalarProperty Name="Duracion_Minutos" ColumnName="Duracion_Minutos" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PerfilProfesional">
+            <EntityTypeMapping TypeName="SysClinModel.PerfilProfesional">
+              <MappingFragment StoreEntitySet="PerfilProfesional">
+                <ScalarProperty Name="ID_Perfil_Profesional" ColumnName="ID_Perfil_Profesional" />
+                <ScalarProperty Name="ID_Usuario" ColumnName="ID_Usuario" />
+                <ScalarProperty Name="ID_Especialidad" ColumnName="ID_Especialidad" />
+                <ScalarProperty Name="Lugar_Atencion" ColumnName="Lugar_Atencion" />
+                <ScalarProperty Name="Tiempo_Anticipacion" ColumnName="Tiempo_Anticipacion" />
+                <ScalarProperty Name="Unidad_Anticipacion" ColumnName="Unidad_Anticipacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RecuperacionContrasena">
+            <EntityTypeMapping TypeName="SysClinModel.RecuperacionContrasena">
+              <MappingFragment StoreEntitySet="RecuperacionContrasena">
+                <ScalarProperty Name="ID_Recuperacion_Contrasena" ColumnName="ID_Recuperacion_Contrasena" />
+                <ScalarProperty Name="ID_Usuario" ColumnName="ID_Usuario" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Fecha_Solicitud" ColumnName="Fecha_Solicitud" />
+                <ScalarProperty Name="Fecha_Expiracion" ColumnName="Fecha_Expiracion" />
+                <ScalarProperty Name="Usado" ColumnName="Usado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Servicio">
+            <EntityTypeMapping TypeName="SysClinModel.Servicio">
+              <MappingFragment StoreEntitySet="Servicio">
+                <ScalarProperty Name="ID_Servicio" ColumnName="ID_Servicio" />
+                <ScalarProperty Name="ID_Usuario" ColumnName="ID_Usuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoIdentificacion">
+            <EntityTypeMapping TypeName="SysClinModel.TipoIdentificacion">
+              <MappingFragment StoreEntitySet="TipoIdentificacion">
+                <ScalarProperty Name="ID_Tipo_Identificacion" ColumnName="ID_Tipo_Identificacion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoUsuario">
+            <EntityTypeMapping TypeName="SysClinModel.TipoUsuario">
+              <MappingFragment StoreEntitySet="TipoUsuario">
+                <ScalarProperty Name="ID_Tipo_Usuario" ColumnName="ID_Tipo_Usuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="SysClinModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="ID_Usuario" ColumnName="ID_Usuario" />
+                <ScalarProperty Name="ID_Tipo_Usuario" ColumnName="ID_Tipo_Usuario" />
+                <ScalarProperty Name="ID_Tipo_Identificacion" ColumnName="ID_Tipo_Identificacion" />
+                <ScalarProperty Name="Numero_Identificacion" ColumnName="Numero_Identificacion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Primer_Apellido" ColumnName="Primer_Apellido" />
+                <ScalarProperty Name="Segundo_Apellido" ColumnName="Segundo_Apellido" />
+                <ScalarProperty Name="Correo_Electronico" ColumnName="Correo_Electronico" />
+                <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Fecha_Nacimiento" ColumnName="Fecha_Nacimiento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

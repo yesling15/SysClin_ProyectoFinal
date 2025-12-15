@@ -1,0 +1,127 @@
+﻿@model SysClin.Models.ViewModel.CitasPacienteViewModel
+@{
+    ViewBag.Title = "Mis Citas";
+    Layout = ViewBag.Layout;
+}
+
+<h2>Mis citas</h2>
+<hr />
+
+<!-- ===============================
+     FORMULARIO DE FILTROS
+     =============================== -->
+@using (Html.BeginForm("MisCitas", "Cita", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row mb-3">
+
+        <div class="col-md-3">
+            <label>Filtrar por fecha:</label>
+            @Html.TextBoxFor(m => m.FechaFiltro, new { @class = "form-control", type = "date" })
+        </div>
+
+        <div class="col-md-3">
+            <label>Filtrar por estado:</label>
+            @Html.DropDownListFor(
+                m => m.EstadoFiltro,
+                Model.EstadosDisponibles,
+                "Todos",
+                new { @class = "form-control" }
+            )
+        </div>
+
+        <div class="col-md-3 align-self-end">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </div>
+
+    </div>
+}
+
+<hr />
+
+<!-- ===============================
+     LISTA DE CITAS
+     =============================== -->
+
+@if (Model.Citas == null || !Model.Citas.Any())
+{
+    <div class="alert alert-warning">
+        No hay citas registradas.
+    </div>
+}
+else
+{
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Profesional</th>
+                <th>Servicio</th>
+                <th>Estado</th>
+                <th style="width:130px;" class="text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model.Citas)
+            {
+                var fechaHoraCita = c.Fecha.Date + c.Hora;
+
+                <tr>
+                    <td>@c.Fecha.ToString("dd/MM/yyyy")</td>
+                    <td>@c.Hora.ToString(@"hh\:mm")</td>
+                    <td>@c.Profesional</td>
+                    <td>@c.Servicio</td>
+                    <td>@c.Estado</td>
+
+                    <td class="text-center">
+                        @if (c.Estado == "Programada" && fechaHoraCita > DateTime.Now)
+                        {
+                            <button class="btn btn-outline-danger btn-sm"
+                                    onclick="cancelar(@c.ID_Cita)">
+                                <i class="bi bi-x-circle"></i>
+                                Cancelar
+                            </button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function cancelar(id) {
+            Swal.fire({
+                title: "¿Cancelar cita?",
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, cancelar",
+                cancelButtonText: "No"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post('@Url.Action("CancelarCitaPaciente", "Cita")', { id: id }, function (respuesta) {
+                        if (respuesta === "Ok") {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Cita cancelada",
+                                text: "La cita fue cancelada correctamente."
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire("No se puede cancelar", respuesta, "error");
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}

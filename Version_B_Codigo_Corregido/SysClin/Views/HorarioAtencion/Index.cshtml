@@ -1,0 +1,95 @@
+﻿@model List<SysClin.Models.TableViewModel.HorarioAtencionTableViewModel>
+
+@{
+    ViewBag.Title = "Mis horarios de atención";
+    Layout = ViewBag.Layout;
+}
+
+<h2>Mis horarios de atención</h2>
+<hr />
+
+<!-- Botón agregar -->
+<button class="btn btn-primary mb-3"
+        onclick="location.href='@Url.Action("Crear", "HorarioAtencion")'">
+    <i class="bi bi-plus"></i> Agregar horario
+</button>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No tienes horarios configurados todavía.
+    </div>
+}
+else
+{
+    <table class="table table-bordered shadow-sm mt-2">
+        <thead style="background-color:#0d6efd; color:white;">
+            <tr>
+                <th>Día</th>
+                <th>Inicio</th>
+                <th>Fin</th>
+                <th>Duración</th>
+                <th style="width:120px;" class="text-center"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var h in Model)
+            {
+                <tr>
+                    <td>@h.Dia_Semana</td>
+                    <td>@h.Hora_Inicio</td>
+                    <td>@h.Hora_Fin</td>
+                    <td>@h.Duracion_Minutos min</td>
+
+                    <td class="text-center">
+                        <button class="btn btn-warning btn-sm"
+                                onclick="location.href='@Url.Action("Editar", "HorarioAtencion", new { id = h.ID_Horario })'">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+
+                        <button class="btn btn-outline-danger btn-sm"
+                                onclick="eliminar(@h.ID_Horario)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function eliminar(id) {
+            Swal.fire({
+                title: "¿Eliminar horario?",
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post('@Url.Action("Eliminar", "HorarioAtencion")', { id: id }, function (respuesta) {
+                        if (respuesta === "Ok") {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Horario eliminado",
+                                text: "El horario se ha eliminado correctamente."
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire("Error", respuesta, "error");
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}

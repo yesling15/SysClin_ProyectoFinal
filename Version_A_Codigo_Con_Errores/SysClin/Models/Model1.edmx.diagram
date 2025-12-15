@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1c0da6fa2c4b412d9709858b4bc0712a" Name="Diagram1" ZoomLevel="106">
+        <EntityTypeShape EntityType="SysClinModel.BloqueoHorario" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SysClinModel.Cita" Width="1.5" PointX="7.5" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SysClinModel.Especialidad" Width="1.5" PointX="3" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SysClinModel.EstadoCita" Width="1.5" PointX="5.25" PointY="17.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SysClinModel.HorarioAtencion" Width="1.5" PointX="5.25" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SysClinModel.PerfilProfesional" Width="1.5" PointX="5.25" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SysClinModel.RecuperacionContrasena" Width="1.5" PointX="5.25" PointY="20" IsExpanded="true" />
+        <EntityTypeShape EntityType="SysClinModel.Servicio" Width="1.5" PointX="5.25" PointY="23.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SysClinModel.TipoIdentificacion" Width="1.5" PointX="0.75" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SysClinModel.TipoUsuario" Width="1.5" PointX="0.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SysClinModel.Usuario" Width="1.5" PointX="3" PointY="9.25" IsExpanded="true" />
+        <AssociationConnector Association="SysClinModel.FK_BloqueoHorario_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="SysClinModel.FK_Cita_CitaOriginal" ManuallyRouted="false" />
+        <AssociationConnector Association="SysClinModel.FK_Cita_EstadoCita" ManuallyRouted="false" />
+        <AssociationConnector Association="SysClinModel.FK_Cita_Paciente" ManuallyRouted="false" />
+        <AssociationConnector Association="SysClinModel.FK_Cita_Profesional" ManuallyRouted="false" />
+        <AssociationConnector Association="SysClinModel.FK_Cita_Servicio" ManuallyRouted="false" />
+        <AssociationConnector Association="SysClinModel.FK_PerfilProfesional_Especialidad" ManuallyRouted="false" />
+        <AssociationConnector Association="SysClinModel.FK_HorarioAtencion_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="SysClinModel.FK_PerfilProfesional_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="SysClinModel.FK_RecuperacionContrasena_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="SysClinModel.FK_Servicio_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="SysClinModel.FK_Usuario_TipoIdentificacion" ManuallyRouted="false" />
+        <AssociationConnector Association="SysClinModel.FK_Usuario_TipoUsuario" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

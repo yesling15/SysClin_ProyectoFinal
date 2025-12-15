@@ -1,0 +1,96 @@
+﻿@model SysClin.Models.ViewModel.PerfilProfesionalViewModel
+
+@{
+    ViewBag.Title = "Perfil profesional";
+    Layout = ViewBag.Layout;
+}
+
+<h2>Perfil profesional</h2>
+<hr />
+
+@using (Html.BeginForm("Crear", "PerfilProfesional", FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+    @Html.HiddenFor(m => m.ID_Usuario)
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="row">
+                <!-- Columna izquierda: datos básicos del perfil -->
+                <div class="col-md-6">
+
+                    @Html.LabelFor(m => m.ID_Especialidad)
+                    @Html.DropDownListFor(
+                        m => m.ID_Especialidad,
+                        (IEnumerable<SelectListItem>)ViewBag.Especialidades,
+                        "-- Seleccione --",
+                        new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ID_Especialidad, "", new { @class = "d-block text-danger mb-2" })
+
+                    @Html.LabelFor(m => m.Lugar_Atencion)
+                    @Html.TextBoxFor(m => m.Lugar_Atencion, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Lugar_Atencion, "", new { @class = "d-block text-danger mb-2" })
+                </div>
+
+                <!-- Columna derecha: política de cancelación / reprogramación -->
+                <div class="col-md-6">
+                    <h5>Política de cancelación y reprogramación</h5>
+                    <p class="text-muted">
+                        Esta política define con cuánta anticipación los pacientes pueden cancelar o
+                        reprogramar una cita sin restricciones. La configuración es opcional y puede
+                        modificarse más adelante desde el perfil profesional.
+                    </p>
+
+                    @Html.LabelFor(m => m.Tiempo_Anticipacion)
+                    @Html.TextBoxFor(
+                        m => m.Tiempo_Anticipacion,
+                        new { @class = "form-control", type = "number", step = "1" })
+                    @Html.ValidationMessageFor(m => m.Tiempo_Anticipacion, "", new { @class = "d-block text-danger mb-2" })
+
+                    @Html.LabelFor(m => m.Unidad_Anticipacion)
+                    @Html.DropDownListFor(
+                        m => m.Unidad_Anticipacion,
+                        (IEnumerable<SelectListItem>)ViewBag.UnidadesAnticipacion,
+                        new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Unidad_Anticipacion, "", new { @class = "d-block text-danger mb-2" })
+
+                    <small class="text-muted d-block mt-1">
+                        Si se indica un tiempo de anticipación, también debe seleccionarse una unidad
+                        (por ejemplo, 24 horas o 2 días).
+                    </small>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn.success me-2 btn btn-success">Guardar</button>
+                <button type="button" class="btn btn-outline-secondary"
+                        onclick="location.href='@Url.Action("Index", "Home")'">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (ViewBag.RegistroExitoso != null && (bool)ViewBag.RegistroExitoso)
+    {
+        <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Registro',
+            text: 'La cuenta se ha creado correctamente.'
+        }).then(function () {
+            window.location.href = '@Url.Action("Index", "Login")';
+        });
+        </script>
+    }
+}

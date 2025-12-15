@@ -1,0 +1,77 @@
+﻿@model SysClin.Models.ViewModel.DisponibilidadViewModel
+
+@{
+    ViewBag.Title = "Horarios disponibles";
+    Layout = ViewBag.Layout;
+}
+
+<h2>Horarios disponibles</h2>
+<hr />
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+        <h4 class="mb-1">@Model.NombreProfesional</h4>
+        <p class="text-muted">
+            Fecha: <strong>@Model.Fecha.ToString("dd/MM/yyyy")</strong>
+        </p>
+
+        <hr />
+
+        <!-- =============================
+             HORARIOS DISPONIBLES
+        ============================== -->
+        <h5 class="mb-3">
+            Horarios disponibles</h5>
+
+            @if (Model.HorasDisponibles == null || !Model.HorasDisponibles.Any())
+            {
+                <div class="alert alert-warning">
+                    No hay horarios disponibles para esta fecha.
+                </div>
+            }
+            else
+            {
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Hora</th>
+                            <th class="text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var h in Model.HorasDisponibles)
+                        {
+                            <tr>
+                                <td>@h.ToString(@"hh\:mm")</td>                                
+                                <td class="text-center">
+                                    <a href="@Url.Action(
+                                        "CrearCitaPaciente",
+                                        "Cita",
+                                        new {
+                                            idProfesional = Model.ID_Profesional,
+                                            fecha = Model.Fecha.ToString("yyyy-MM-dd"),
+                                            hora = h.ToString()
+                                        })"
+                                        class="btn btn-success btn-sm">
+                                        Reservar
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+
+    </div>
+</div>
+
+<a href="@Url.Action("Ver", "Disponibilidad", new { idProfesional = Model.ID_Profesional })"
+   class="btn btn-outline-secondary">
+    Cambiar fecha
+</a>
+
+<a href="@Url.Action("Perfil", "Profesional", new { id = Model.ID_Profesional })"
+   class="btn btn-outline-secondary ms-2">
+    Volver al perfil
+</a>

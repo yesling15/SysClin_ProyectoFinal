@@ -1,0 +1,83 @@
+﻿@model List<SysClin.Models.TableViewModel.ServicioTableViewModel>
+
+@{
+    ViewBag.Title = "Servicios de atención";
+    Layout = ViewBag.Layout;
+}
+
+<h2>Mis servicios de atención</h2>
+<hr />
+
+<!-- Botón agregar -->
+<button class="btn btn-primary mb-3"
+        onclick="location.href='@Url.Action("Crear", "Servicio")'">
+    <i class="bi bi-plus"></i> Agregar servicio
+</button>
+
+<table class="table table-striped">
+    <thead style="background-color:#0d6efd; color:white;">
+        <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th style="width: 120px;" class="text-center"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var s in Model)
+        {
+            <tr>
+                <td>@s.Nombre</td>
+                <td>₡ @s.Precio</td>
+
+                <td class="text-center">
+                    <button class="btn btn-warning btn-sm"
+                            onclick="location.href='@Url.Action("Editar", "Servicio", new { id = s.ID_Servicio })'">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+
+                    <button class="btn btn-outline-danger btn-sm"
+                            onclick="eliminar(@s.ID_Servicio)">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function eliminar(id) {
+            Swal.fire({
+                title: "¿Eliminar servicio?",
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post('@Url.Action("Eliminar", "Servicio")', { id: id }, function (respuesta) {
+                        if (respuesta === "Ok") {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Eliminado",
+                                text: "El servicio ha sido eliminado."
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire("Error", respuesta, "error");
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+    
+}

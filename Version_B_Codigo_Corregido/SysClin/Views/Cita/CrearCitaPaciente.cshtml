@@ -1,0 +1,86 @@
+﻿@model SysClin.Models.ViewModel.CrearCitaPacienteViewModel
+
+@{
+    ViewBag.Title = "Reservar cita";
+    Layout = ViewBag.Layout;
+}
+
+<h2>Reservar cita</h2>
+<hr />
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+        <h4 class="mb-1">@Model.NombreProfesional</h4>
+
+        <p class="text-muted mb-1">
+            <strong>Fecha:</strong> @Model.Fecha.ToString("dd/MM/yyyy")
+        </p>
+
+        <p class="text-muted mb-3">
+            <strong>Hora:</strong> @Model.Hora.ToString(@"hh\:mm")
+        </p>
+
+        <hr />
+
+        @using (Html.BeginForm("CrearCitaPaciente", "Cita", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(m => m.ID_Paciente)
+            @Html.HiddenFor(m => m.ID_Profesional)
+            @Html.HiddenFor(m => m.Fecha)
+            @Html.HiddenFor(m => m.Hora)
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+
+            <!-- =============================
+                 SELECCIÓN DE SERVICIO
+            ============================== -->
+            <div class="mb-3">
+                @Html.LabelFor(m => m.ID_Servicio)
+                @Html.DropDownListFor(m => m.ID_Servicio,
+                    Model.ServiciosDisponibles,
+                    "-- Seleccione un servicio --",
+                    new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ID_Servicio, "", new { @class = "text-danger" })
+            </div>
+
+
+            <!-- =============================
+                 BOTONES
+            ============================== -->
+            <button type="submit" class="btn btn-success">
+                Reservar cita
+            </button>
+
+            <a href="@Url.Action("Resultado", "Disponibilidad",
+                    new { idProfesional = Model.ID_Profesional, fecha = Model.Fecha })"
+               class="btn btn-outline-secondary ms-2">
+                Volver
+            </a>
+        }
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (ViewBag.Creado != null && (bool)ViewBag.Creado)
+    {
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Cita reservada',
+                text: 'La cita ha sido creada exitosamente.',
+                confirmButtonText: 'Aceptar'
+            }).then(() => {
+                window.location.href = '@Url.Action("Index", "Home")';
+            });
+        </script>
+    }
+}

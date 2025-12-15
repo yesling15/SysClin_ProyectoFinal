@@ -1,0 +1,125 @@
+﻿@model SysClin.Models.ViewModel.CambiarContrasenaViewModel
+
+@{
+    ViewBag.Title = "Cambiar contraseña";
+    Layout = ViewBag.Layout;
+}
+
+<h2>Cambiar contraseña</h2>
+<hr />
+
+@using (Html.BeginForm("CambiarContrasena", "Usuario", FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ID_Usuario)
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <!-- Contraseña actual -->
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.ContrasenaActual)
+
+                <div class="input-group">
+                    @Html.PasswordFor(m => m.ContrasenaActual,
+                        new { @class = "form-control", id = "txtActual" })
+
+                    <button type="button" class="btn btn-outline-secondary"
+                            onclick="togglePassword('txtActual','iconActual')">
+                        <i id="iconActual" class="bi bi-eye"></i>
+                    </button>
+                </div>
+
+                @Html.ValidationMessageFor(m => m.ContrasenaActual, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Nueva contraseña -->
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.NuevaContrasena)
+
+                <div class="input-group">
+                    @Html.PasswordFor(m => m.NuevaContrasena,
+                        new { @class = "form-control", id = "txtNueva" })
+
+                    <button type="button" class="btn btn-outline-secondary"
+                            onclick="togglePassword('txtNueva','iconNueva')">
+                        <i id="iconNueva" class="bi bi-eye"></i>
+                    </button>
+                </div>
+
+                @Html.ValidationMessageFor(m => m.NuevaContrasena, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Confirmar contraseña -->
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.ConfirmarNuevaContrasena)
+
+                <div class="input-group">
+                    @Html.PasswordFor(m => m.ConfirmarNuevaContrasena,
+                        new { @class = "form-control", id = "txtConfirmar" })
+
+                    <button type="button" class="btn btn-outline-secondary"
+                            onclick="togglePassword('txtConfirmar','iconConfirmar')">
+                        <i id="iconConfirmar" class="bi bi-eye"></i>
+                    </button>
+                </div>
+
+                @Html.ValidationMessageFor(m => m.ConfirmarNuevaContrasena, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Botones -->
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary me-2">Guardar</button>
+
+                <button type="button" class="btn btn-outline-secondary"
+                        onclick="location.href='@Url.Action("Index", "Home")'">
+                    Cancelar
+                </button>
+            </div>
+
+        </div>
+    </div>
+}
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Script mostrar/ocultar contraseña -->
+    <script>
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.replace("bi-eye", "bi-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.replace("bi-eye-slash", "bi-eye");
+            }
+        }
+    </script>
+
+    @if (ViewBag.ContrasenaActualizada != null && (bool)ViewBag.ContrasenaActualizada)
+    {
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Contraseña actualizada',
+                text: 'Tu contraseña ha sido cambiada correctamente.'
+            }).then(function () {
+                window.location.href = '@Url.Action("Index", "Home")';
+            });
+        </script>
+    }
+}

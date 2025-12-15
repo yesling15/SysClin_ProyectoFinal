@@ -1,0 +1,166 @@
+﻿@model SysClin.Models.ViewModel.UsuarioViewModel
+
+@{
+    ViewBag.Title = "Registro de usuario";
+    Layout = ViewBag.Layout;
+}
+
+<h2>Registro de usuario</h2>
+<hr />
+
+@using (Html.BeginForm("Registro", "Usuario", FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="row">
+
+                <!-- Columna izquierda -->
+                <div class="col-md-6">
+
+                    @* Tipo de usuario *@
+                    @Html.LabelFor(m => m.ID_Tipo_Usuario)
+                    @Html.DropDownListFor(
+                        m => m.ID_Tipo_Usuario,
+                        (IEnumerable<SelectListItem>)ViewBag.TiposUsuario,
+                        "-- Seleccione --",
+                        new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ID_Tipo_Usuario, "", new { @class = "d-block text-danger mb-2" })
+
+                    @* Tipo de identificación *@
+                    @Html.LabelFor(m => m.ID_Tipo_Identificacion)
+                    @Html.DropDownListFor(
+                        m => m.ID_Tipo_Identificacion,
+                        (IEnumerable<SelectListItem>)ViewBag.TiposIdentificacion,
+                        "-- Seleccione --",
+                        new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ID_Tipo_Identificacion, "", new { @class = "d-block text-danger mb-2" })
+
+                    @* Número de identificación *@
+                    @Html.LabelFor(m => m.Numero_Identificacion)
+                    @Html.TextBoxFor(m => m.Numero_Identificacion, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Numero_Identificacion, "", new { @class = "d-block text-danger mb-2" })
+
+                    @* Nombre *@
+                    @Html.LabelFor(m => m.Nombre)
+                    @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Nombre, "", new { @class = "d-block text-danger mb-2" })
+
+                    @* Primer apellido *@
+                    @Html.LabelFor(m => m.Primer_Apellido)
+                    @Html.TextBoxFor(m => m.Primer_Apellido, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Primer_Apellido, "", new { @class = "d-block text-danger mb-2" })
+
+                    @* Segundo apellido *@
+                    @Html.LabelFor(m => m.Segundo_Apellido)
+                    @Html.TextBoxFor(m => m.Segundo_Apellido, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Segundo_Apellido, "", new { @class = "d-block text-danger mb-2" })
+
+                </div>
+
+                <!-- Columna derecha -->
+                <div class="col-md-6">
+
+                    @* Fecha de nacimiento *@
+                    @Html.LabelFor(m => m.Fecha_Nacimiento)
+                    @Html.TextBoxFor(m => m.Fecha_Nacimiento, new { @class = "form-control", type = "date" })
+                    @Html.ValidationMessageFor(m => m.Fecha_Nacimiento, "", new { @class = "d-block text-danger mb-2" })
+
+                    @* Correo electrónico *@
+                    @Html.LabelFor(m => m.Correo_Electronico)
+                    @Html.TextBoxFor(m => m.Correo_Electronico, new { @class = "form-control", type = "email" })
+                    @Html.ValidationMessageFor(m => m.Correo_Electronico, "", new { @class = "d-block text-danger mb-2" })
+
+                    @* Teléfono *@
+                    @Html.LabelFor(m => m.Telefono)
+                    @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Telefono, "", new { @class = "d-block text-danger mb-2" })
+
+                    <!-- Campo contraseña con ojito -->
+                    <div class="form-group mb-2">
+                        @Html.LabelFor(m => m.Contrasena)
+
+                        <div class="input-group">
+                            @Html.PasswordFor(m => m.Contrasena,
+                                new { @class = "form-control", id = "txtContrasena" })
+                            <button type="button" class="btn btn-outline-secondary"
+                                    onclick="togglePassword('txtContrasena','iconContrasena')">
+                                <i id="iconContrasena" class="bi bi-eye"></i>
+                            </button>
+                        </div>
+
+                        @Html.ValidationMessageFor(m => m.Contrasena, "", new { @class = "d-block text-danger" })
+                    </div>
+
+                    <!-- Confirmar contraseña con ojito -->
+                    <div class="form-group mb-2">
+                        @Html.LabelFor(m => m.ConfirmarContrasena)
+
+                        <div class="input-group">
+                            @Html.PasswordFor(m => m.ConfirmarContrasena,
+                                new { @class = "form-control", id = "txtConfirmar" })
+                            <button type="button" class="btn btn-outline-secondary"
+                                    onclick="togglePassword('txtConfirmar','iconConfirmar')">
+                                <i id="iconConfirmar" class="bi bi-eye"></i>
+                            </button>
+                        </div>
+
+                        @Html.ValidationMessageFor(m => m.ConfirmarContrasena, "", new { @class = "d-block text-danger" })
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-success me-2">Crear cuenta</button>
+                        <button type="button" class="btn btn-outline-secondary"
+                                onclick="location.href='@Url.Action("Index", "Login")'">
+                            Cancelar
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <!-- Bootstrap Icons para el ojito -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
+    <!-- Script SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Script mostrar/ocultar contraseña -->
+    <script>
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.replace("bi-eye", "bi-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.replace("bi-eye-slash", "bi-eye");
+            }
+        }
+    </script>
+
+    @if (ViewBag.RegistroExitoso != null && (bool)ViewBag.RegistroExitoso)
+    {
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Registro',
+                text: 'La cuenta se ha creado correctamente.'
+            }).then(function () {
+                window.location.href = '@Url.Action("Index", "Login")';
+            });
+        </script>
+    }
+}

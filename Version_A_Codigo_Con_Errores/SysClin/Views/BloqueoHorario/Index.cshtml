@@ -1,0 +1,95 @@
+﻿@model List<SysClin.Models.TableViewModel.BloqueoHorarioTableViewModel>
+
+@{
+    ViewBag.Title = "Mis bloqueos de horario";
+    Layout = ViewBag.Layout;
+}
+
+<h2>Mis bloqueos de horario</h2>
+<hr />
+
+<!-- Botón agregar -->
+<button class="btn btn-primary mb-3"
+        onclick="location.href='@Url.Action("Crear", "BloqueoHorario")'">
+    <i class="bi bi-plus"></i> Agregar bloqueo
+</button>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No tienes bloqueos registrados todavía.
+    </div>
+}
+else
+{
+    <table class="table table-bordered shadow-sm mt-2">
+        <thead style="background-color:#0d6efd; color:white;">
+            <tr>
+                <th>Fecha inicio</th>
+                <th>Hora inicio</th>
+                <th>Fecha fin</th>
+                <th>Hora fin</th>
+                <th style="width:120px;" class="text-center"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var b in Model)
+            {
+                <tr>
+                    <td>@b.Fecha_Inicio.ToString("dd/MM/yyyy")</td>
+                    <td>@b.Hora_Inicio.ToString(@"hh\:mm")</td>
+                    <td>@b.Fecha_Fin.ToString("dd/MM/yyyy")</td>
+                    <td>@b.Hora_Fin.ToString(@"hh\:mm")</td>
+
+                    <td class="text-center">
+                        <button class="btn btn-warning btn-sm"
+                                onclick="location.href='@Url.Action("Editar", "BloqueoHorario", new { id = b.ID_Bloqueo_Horario })'">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+
+                        <button class="btn btn-outline-danger btn-sm"
+                                onclick="eliminar(@b.ID_Bloqueo_Horario)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function eliminar(id) {
+            Swal.fire({
+                title: "¿Eliminar bloqueo?",
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post('@Url.Action("Eliminar", "BloqueoHorario")', { id: id }, function (respuesta) {
+                        if (respuesta === "Ok") {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Bloqueo eliminado",
+                                text: "El bloqueo se ha eliminado correctamente."
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire("Error", respuesta, "error");
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}
